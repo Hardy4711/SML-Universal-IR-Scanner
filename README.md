@@ -2,37 +2,37 @@
 
 **Firmware:** sml_universal_scanner v1.4  
 **Hardware:** Wemos D1 Mini (ESP8266) + Hichi IR-Lesekopf  
-**Zweck:** Unbekannte SML-Smartmeter analysieren und Produktions-Code generieren  
+**Zweck:** Unbekannte SML-Smartmeter mit Infrarot-Augabe analysieren und C++ -Code generieren  
 **Datum:** Februar 2026  
 
 ---
 
 ## 1. Konzept — Dual-Scan (optional)
 
-Der Scanner arbeitet mit zwei Messsituationen um OBIS-Struktur, Datentypen und
+Der Scanner arbeitet mit zwei Verbrauchssituationen (Bzug/Einspeisung) um OBIS-Struktur, Datentypen und
 Vorzeichen eines unbekannten Zählers vollständig zu charakterisieren:
 
 ```
-Situation A  →  nur Netzbezug, Inverter AUS          [immer erforderlich]
-               Zähler zeigt positive Momentanleistung
+Situation Bezug (A)  →  nur Netzbezug, Keine Einspeisung (Inverter AUS)   [immer erforderlich]
+               Smartmeter zeigt positive Momentanleistung
                → Alle Leistungswerte müssen positiv sein
 
-Situation B  →  mit Einspeisung, Inverter EIN         [optional — nur bei Inverter]
-               Zähler zeigt negative Momentanleistung
+Situation Einspeisung (B)  →  mit Einspeisung, Inverter EIN    [optional — nur bei Einspeise-Inverter]
+               Smartmeter zeigt negative Momentanleistung
                → Vorzeichenverhalten der Leistungswerte wird sichtbar
 ```
 
-Nach Situation A fragt der Scanner ob ein Inverter vorhanden ist:
+Nach Situation Bezug (A) fragt der Scanner ob ein Inverter vorhanden ist:
 
-- **Nein (n)** → Situation B wird übersprungen, direkte Analyse und Code-Generierung.
+- **Nein (n)** → Auswertung Situation Einspeisung (B) wird übersprungen, direkte Analyse und Code-Generierung.
   Alle Leistungswerte werden als unsigned ausgegeben. Im generierten Code
   erscheint ein Hinweis dass das Vorzeichen unbekannt ist.
-- **Ja (j)** → Situation B wird durchgeführt. Signed/unsigned und Vorzeichen
+- **Ja (j)** → Auswertung Situation Einspeisung (B) wird durchgeführt. Signed/unsigned und Vorzeichen
   werden durch Vergleich beider Frames eindeutig bestimmt.
 
-Durch den Vergleich beider Frames (bei Inverter) lassen sich signed/unsigned,
-Byte-Länge und Scaler für jeden OBIS-Code eindeutig bestimmen — ohne Vorannahmen
-über den Zähler.
+Durch den Vergleich beider SML-Frames (Netzbezug/Einspeisung) lassen sich signed/unsigned (Vorzeichen),
+Byte-Länge und Scaler für jeden OBIS-Code eindeutig bestimmen — ohne weitere Vorkentnisse
+zum Smartmeter.
 
 ---
 
@@ -40,8 +40,8 @@ Byte-Länge und Scaler für jeden OBIS-Code eindeutig bestimmen — ohne Voranna
 
 | Komponente | Details |
 |---|---|
-| Mikrocontroller | Wemos D1 Mini (ESP8266) |
-| IR-Lesekopf | Hichi IR-Kopf (TTL, 9600 Baud) |
+| Mikrocontroller | Wemos D1 Mini (ESP8266) o.ä. |
+| IR-Lesekopf | Hichi IR-Kopf o.ä (TTL, 9600 Baud) |
 | Anschluss | IR-Kopf RX → GPIO14 (D5) |
 | Serial Monitor | 115200 Baud, Zeilenende: **Newline (LF)** |
 
@@ -59,7 +59,7 @@ GND          ──────────  GND
 
 ## 3. Bedienung — Schritt für Schritt
 
-### Schritt 1: Situation A (nur Bezug)
+### Schritt 1: Situation Bezug (A)
 
 ```
 1. Inverter AUS, nur Netzbezug aktiv
@@ -79,13 +79,13 @@ GND          ──────────  GND
    (Vorbelegung: auto-ermittelter Wert direkt im Eingabepuffer)
 ```
 
-### Schritt 2.5: Inverter-Abfrage
+### Schritt 2.5: Einspeisungs-Abfrage
 
 ```
 9. Scanner fragt: "Haben Sie einen Solar-Inverter oder andere Einspeisung? (j/n)"
 
    Eingabe n (Nein):
-     → Situation B wird übersprungen
+     → Auswertung Situation Einspeisung (B) wird übersprungen
      → Direkt zu Schritt 4 (Analyse + Code)
      → Hinweis im Code: Vorzeichen unbekannt
 
@@ -96,7 +96,7 @@ GND          ──────────  GND
 Akzeptierte Eingaben: `j` / `J` / `y` / `Y` für Ja, `n` / `N` für Nein.
 ENTER allein wird ignoriert — kein versehentliches Auslösen.
 
-### Schritt 3: Situation B — mit Einspeisung (nur bei Inverter)
+### Schritt 3: Situation Einspeisung (B) — mit Einspeisung (nur bei Einspeise-Inverter)
 
 ```
 10. Inverter einschalten
@@ -192,12 +192,12 @@ Jedes gefundene OBIS-Objekt wird in der Tabelle mit Typ-Marker versehen:
 ### Eingabe-Validierung
 
 ```
-Situation A:  inputVal < 0  → Abweisung + Re-Prompt
+Situation Bezug (A):  inputVal < 0  → Abweisung + Re-Prompt
               "FEHLER: Negative Werte in Situation A nicht erlaubt!"
               "> " wird wiederholt, Timeout wird zurückgesetzt
 
-Situation B:  inputVal >= 0 → Abweisung + Re-Prompt
-              "FEHLER: Positive Werte in Situation B?"
+Situation Einspeisung (B):  inputVal >= 0 → Abweisung + Re-Prompt
+              "FEHLER: Positive Werte in Situation A?"
               "Einspeisung erhoehen bis Zaehler negativ zeigt"
 ```
 
@@ -235,10 +235,10 @@ der direkt in den Minimal-Sketch (siehe Anhang A) kopiert werden kann.
 
 **Mit Inverter (Dual-Scan):** Vorzeichen bekannt, signed/unsigned korrekt gesetzt.
 
-**Ohne Inverter (nur Situation A):** Zusätzlicher Hinweis im generierten Code:
+**Ohne Inverter (nur Situation Bezug (A)):** Zusätzlicher Hinweis im generierten Code:
 
 ```cpp
-// HINWEIS: Nur Situation A gemessen (kein Inverter).
+// HINWEIS: Nur Situation Bezug (A) gemessen (kein Inverter).
 // Vorzeichen der Leistungswerte unbekannt.
 // Alle Werte werden als unsigned ausgegeben.
 // Fuer Vorzeichen-Erkennung Scanner mit Inverter wiederholen.
@@ -612,7 +612,7 @@ void loop() {
 ```
 1. sml_universal_scanner.ino flashen
 2. Serial Monitor (115200 Baud) öffnen
-3. Scan durchführen (Situation A + optional B)
+3. Scan durchführen (Situation Bezug (A) + optional B)
 
 4. Scanner gibt aus, z.B.:
      const byte OBIS_POW_SUM[] = {0x77,0x07,0x01,0x00,0x10,0x07,0x00,0xFF};
@@ -642,5 +642,5 @@ Topic: meter/status
 ```
 
 > **Hinweis Einspeisung:** Negative `pow`-Werte bedeuten Netzeinspeisung.
-> Ohne Inverter (nur Situation A gescannt) sind alle Leistungswerte positiv
+> Ohne Inverter (nur Situation Bezug (A) gescannt) sind alle Leistungswerte positiv
 > und unsigned — der Sketch funktioniert in beiden Fällen identisch.
