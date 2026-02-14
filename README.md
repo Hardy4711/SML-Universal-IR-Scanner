@@ -41,12 +41,12 @@ zum Smartmeter.
 | Komponente | Details |
 |---|---|
 | Mikrocontroller | Wemos D1 Mini (ESP8266) o.ä. |
-| IR-Lesekopf | Hichi IR-Kopf o.ä (TTL, 9600 Baud) |
+| IR-Lesekopf | Hichi IR/TTL-Kopf o.ä (TTL, 9600 Baud) |
 | Anschluss | IR-Kopf RX → GPIO14 (D5) |
 | Serial Monitor | 115200 Baud, Zeilenende: **Newline (LF)** |
 
 ```
-Wemos D1 Mini          Hichi IR-Kopf
+Wemos D1 Mini          Hichi IR/TTL-Kopf
 ─────────────          ─────────────
 D5 (GPIO14)  ←────────  Data (TX)
 GND          ──────────  GND
