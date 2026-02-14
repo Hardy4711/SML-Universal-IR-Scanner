@@ -12,6 +12,11 @@
  *   meter/power   → {"pow":0.0,"L1":0.0,"L2":0.0,"L3":0.0}  [W]
  *   meter/counter → {"kwh_in":0.000,"kwh_out":0.000}        [kWh]
  *   meter/status  → "online" / "offline" (LWT)
+ *
+ * Benötigte Bibliotheken:
+ *   PubSubClient (Nick O'Leary)
+ *   ArduinoJson (Benoit Blanchon) ≥ v6
+ *   SoftwareSerial (in ESP8266-Core enthalten)
  */
 
 #include <ESP8266WiFi.h>
@@ -261,4 +266,5 @@ void loop() {
             lastCounter = now;
         }
     }
+
 }
