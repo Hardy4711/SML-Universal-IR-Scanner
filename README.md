@@ -1,7 +1,7 @@
 # SML Universal IR-Scanner für Smartmeter — Protokollanalyse & Programmierunterstützung
 
 **Firmware:** sml_universal_scanner v1.4  
-**Hardware:** Wemos D1 Mini (ESP8266) + Hichi IR-Lesekopf  
+**Hardware:** Wemos D1 Mini o.ä. (ESP8266) + Hichi IR-Lesekopf o.ä. (IR/TTL)  
 **Zweck:** Unbekannte SML-Smartmeter mit Infrarot-Augabe analysieren und C++ -Code generieren  
 **Datum:** Februar 2026  
 
