@@ -22,7 +22,7 @@ Situation Einspeisung (B)  →  mit Einspeisung, Inverter EIN    [optional — n
                → Vorzeichenverhalten der Leistungswerte wird sichtbar
 ```
 
-Nach Scann-Zyklus Bezug (A) fragt der Scanner ob ein Einspeiseinverter vorhanden ist:
+Nach Scannzyklus Bezug (A) fragt der Scanner ob ein Einspeiseinverter vorhanden ist:
 
 - **Nein (n)** → Scannzyklus Einspeisung (B) wird übersprungen, direkte Analyse und Code-Generierung.
   Alle Leistungswerte werden als unsigned ausgegeben. Im generierten Code
