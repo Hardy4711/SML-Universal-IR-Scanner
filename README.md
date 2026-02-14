@@ -22,12 +22,12 @@ Situation Einspeisung (B)  →  mit Einspeisung, Inverter EIN    [optional — n
                → Vorzeichenverhalten der Leistungswerte wird sichtbar
 ```
 
-Nach Situation Bezug (A) fragt der Scanner ob ein Inverter vorhanden ist:
+Nach Scann-Zyklus Bezug (A) fragt der Scanner ob ein Einspeiseinverter vorhanden ist:
 
-- **Nein (n)** → Auswertung Situation Einspeisung (B) wird übersprungen, direkte Analyse und Code-Generierung.
+- **Nein (n)** → Scannzyklus Einspeisung (B) wird übersprungen, direkte Analyse und Code-Generierung.
   Alle Leistungswerte werden als unsigned ausgegeben. Im generierten Code
   erscheint ein Hinweis dass das Vorzeichen unbekannt ist.
-- **Ja (j)** → Auswertung Situation Einspeisung (B) wird durchgeführt. Signed/unsigned und Vorzeichen
+- **Ja (j)** → Scannzyklus Einspeisung (B) wird durchgeführt. Signed/unsigned und Vorzeichen
   werden durch Vergleich beider Frames eindeutig bestimmt.
 
 Durch den Vergleich beider SML-Frames (Netzbezug/Einspeisung) lassen sich signed/unsigned (Vorzeichen),
