@@ -9,7 +9,7 @@
 
 ## 1. Konzept — Dual-Scan (optional)
 
-Der Scanner benötigt zwei Verbrauchszustände (Bezug/Einspeisung) um OBIS-Struktur, Datentypen und
+Der Scanner benötigt zwei Messzyklen (Bezug/Einspeisung) um OBIS-Struktur, Datentypen und
 Vorzeichen eines unbekannten Smartmeters vollständig zu charakterisieren:
 
 ```
