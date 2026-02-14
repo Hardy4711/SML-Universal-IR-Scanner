@@ -48,7 +48,7 @@ zum Smartmeter.
 ```
 Wemos D1 Mini          Hichi IR-Kopf
 ─────────────          ─────────────
-D5 (GPIO14)  ←────────  Data
+D5 (GPIO14)  ←────────  Data (TX)
 GND          ──────────  GND
 3.3V         ──────────  VCC
 ```
