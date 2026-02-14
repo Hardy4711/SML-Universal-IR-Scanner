@@ -9,8 +9,8 @@
 
 ## 1. Konzept — Dual-Scan (optional)
 
-Der Scanner arbeitet mit zwei Verbrauchssituationen (Bzug/Einspeisung) um OBIS-Struktur, Datentypen und
-Vorzeichen eines unbekannten Zählers vollständig zu charakterisieren:
+Der Scanner benötigt zwei Verbrauchszustände (Bezug/Einspeisung) um OBIS-Struktur, Datentypen und
+Vorzeichen eines unbekannten Smartmeters vollständig zu charakterisieren:
 
 ```
 Situation Bezug (A)  →  nur Netzbezug, Keine Einspeisung (Inverter AUS)   [immer erforderlich]
