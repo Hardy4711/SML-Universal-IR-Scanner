@@ -326,7 +326,7 @@ die für andere EasyMeter / ESY-Zähler relevant sein können:
 
 ---
 
-## Anhang A — Minimaler Production-Sketch mit MQTT
+## Anhang A — Beispiel Sketch mit MQTT-Übertragung der Smartmeter-Daten
 
 Dieser Sketch ist direkt compilierbar und lauffähig. Anpassungen sind nur
 in den zwei markierten Blöcken nötig: Zugangsdaten und Scanner-Output.
